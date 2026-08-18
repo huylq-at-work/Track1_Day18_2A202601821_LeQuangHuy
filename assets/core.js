@@ -2,7 +2,8 @@
    core.js — phần dùng chung của 3 prototype (proA / proB / proC)
 
    Gồm: dữ liệu ghi chú mẫu, khung màn hình 1 trang (không cuộn),
-        bộ chuyển trang slide, và engine kéo–thả tự viết bằng Pointer Events.
+        thu/phóng slide 0.8x–1.5x, chuyển trang slide,
+        và engine kéo–thả tự viết bằng Pointer Events.
 
    Lưu ý: dùng script thường (không phải ES module) để mở được trực tiếp
    bằng file:// mà không vướng CORS.
@@ -13,6 +14,8 @@
   /* ---------- 1. Dữ liệu slide + ghi chú mẫu ----------
      Ba mẩu ghi chú giả lập, neo vào đúng ba vùng trên ảnh template.png.
      Toạ độ tính theo % so với khung ảnh (1038 x 584). */
+  var RATIO = 1038 / 584;
+
   var SLIDES = [
     { no: 4, img: null, title: 'Trang trước đó' },
     {
@@ -45,8 +48,10 @@
     { no: 6, img: null, title: 'Trang tiếp theo' }
   ];
 
-  var TOTAL_SLIDES = 38;          // số trang của bài giảng (chỉ để hiển thị)
-  var START = 1;                  // chỉ số slide 5 trong mảng SLIDES
+  var TOTAL_SLIDES = 38;   // tổng số trang của bài giảng (chỉ để hiển thị)
+  var START = 1;           // vị trí Slide 5 trong mảng SLIDES
+
+  var ZOOM_MIN = 0.8, ZOOM_MAX = 1.5, ZOOM_STEP = 0.1;
 
   /* ---------- 2. Tiện ích nhỏ ---------- */
   function el(tag, cls, html) {
@@ -58,6 +63,7 @@
   function pct(r) {
     return 'left:' + r.l + '%;top:' + r.t + '%;width:' + r.w + '%;height:' + r.h + '%;';
   }
+  function round1(v) { return Math.round(v * 10) / 10; }
 
   /* ---------- 3. Engine kéo–thả (Pointer Events + rAF) ----------
      Mượt hơn HTML5 drag-and-drop: ghost bám sát con trỏ theo transform,
@@ -113,17 +119,14 @@
   /* ---------- 4. Dựng khung màn hình ---------- */
   function init(cfg) {
     var app = el('div', 'app');
-    document.body.style.setProperty('--brand', cfg.brand || '#1e3a8a');
+    document.body.style.setProperty('--brand', cfg.brand || '#6b5cf6');
 
-    /* -- thanh trên -- */
+    /* ===== thanh trên ===== */
     var top = el('div', 'topbar');
-    var titleBox = el('div', '', '<div class="ttl">' + cfg.title + '</div>' +
-      '<div class="sub">' + cfg.subtitle + '</div>');
-    var nav = el('div', 'nav');
-    var prev = el('button', '', '◀');
-    var page = el('span', 'pg');
-    var next = el('button', '', '▶');
-    nav.append(prev, page, next);
+    top.append(
+      el('div', '', '<div class="ttl">' + cfg.title + '</div><div class="sub">' + cfg.subtitle + '</div>'),
+      el('div', 'sp')
+    );
 
     var sw = el('div', 'switch');
     ['A', 'B', 'C'].forEach(function (k) {
@@ -131,30 +134,61 @@
       a.href = 'pro' + k + '.html';
       sw.appendChild(a);
     });
+    top.appendChild(sw);
 
-    top.append(titleBox, el('div', 'sp'), nav, sw);
-
-    /* -- thân -- */
+    /* ===== thân ===== */
     var main = el('div', 'main');
     var stage = el('div', 'stage');
+    var canvas = el('div', 'canvas');
+    var hint = el('div', 'hint', cfg.hint || '');
+
+    /* hàng công cụ nhỏ dưới slide: zoom + số trang */
+    var bar = el('div', 'stagebar');
+    var pgLabel = el('span', 'pglabel');
+    var zOut = el('button', 'iconbtn', '−');
+    var zLabel = el('span', 'zoomlabel', '100%');
+    var zIn = el('button', 'iconbtn', '+');
+    var zFit = el('button', 'iconbtn wide', '⤢ Vừa màn hình');
+    var zoomBox = el('div', 'zoombox');
+    zoomBox.append(zOut, zLabel, zIn);
+    bar.append(pgLabel, el('div', 'sp'), zoomBox, zFit);
+
+    /* hàng dưới cùng: chuyển trang slide */
+    var navRow = el('div', 'lessonnav');
+    var prev = el('button', 'btn nav-prev', '‹  Slide trước');
+    var next = el('button', 'btn pri nav-next', 'Slide tiếp theo  ›');
+    navRow.append(prev, el('div', 'sp'), next);
+
+    stage.append(canvas, hint, bar, el('div', 'hr'), navRow);
+
     var dock = el('div', 'dock');
     main.append(stage, dock);
     app.append(top, main);
     document.getElementById('app').replaceWith(app);
 
-    /* -- trạng thái slide -- */
-    var idx = START;
+    /* ===== nút ẩn/hiện panel phải ===== */
+    var toggle = el('button', 'iconbtn panel-toggle', '⊟');
+    toggle.title = 'Ẩn / hiện panel bên phải';
+    toggle.onclick = function () {
+      main.classList.toggle('wide');
+      toggle.textContent = main.classList.contains('wide') ? '⊞' : '⊟';
+      requestAnimationFrame(fit);
+    };
+    top.insertBefore(toggle, sw);
+
+    /* ===== trạng thái ===== */
+    var idx = START, zoom = 1;
+
     var api = {
-      stage: stage, dock: dock, el: el, pct: pct, draggable: draggable,
+      stage: stage, canvas: canvas, dock: dock,
+      el: el, pct: pct, draggable: draggable,
       slide: null, zones: {}, pins: {},
-      /* nháy sáng vùng ghi chú số n trên slide */
       lit: function (n, ms) {
         var z = api.zones[n];
         if (!z) return;
         z.classList.add('lit');
         setTimeout(function () { z.classList.remove('lit'); }, ms || 1300);
       },
-      /* bật/tắt khung vàng của một vùng */
       mark: function (n, on) {
         var z = api.zones[n];
         if (z) z.classList.toggle('show', on !== false);
@@ -164,28 +198,67 @@
       }
     };
 
+    /* ===== thu phóng =====
+       Tính bề rộng "vừa khung" rồi nhân với hệ số zoom. Khi vượt khung,
+       vùng canvas tự cuộn để rê xem từng phần — trang chính vẫn không cuộn. */
+    function fit() {
+      var wrap = canvas.querySelector('.slidewrap');
+      if (!wrap) return;
+      var w = canvas.clientWidth - 8;
+      var h = canvas.clientHeight - 8;
+      var base = Math.min(w, h * RATIO);
+      wrap.style.setProperty('--base', base + 'px');
+      wrap.style.setProperty('--zoom', zoom);
+    }
+    function setZoom(v) {
+      zoom = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, round1(v)));
+      zLabel.textContent = Math.round(zoom * 100) + '%';
+      zOut.disabled = zoom <= ZOOM_MIN;
+      zIn.disabled = zoom >= ZOOM_MAX;
+      fit();
+    }
+    zOut.onclick = function () { setZoom(zoom - ZOOM_STEP); };
+    zIn.onclick = function () { setZoom(zoom + ZOOM_STEP); };
+    zFit.onclick = function () { setZoom(1); canvas.scrollTo(0, 0); };
+
+    /* Ctrl + lăn chuột trên slide cũng thu phóng được */
+    canvas.addEventListener('wheel', function (e) {
+      if (!e.ctrlKey) return;
+      e.preventDefault();
+      setZoom(zoom + (e.deltaY < 0 ? ZOOM_STEP : -ZOOM_STEP));
+    }, { passive: false });
+
+    window.addEventListener('resize', fit);
+
+    /* ===== vẽ slide ===== */
     function drawSlide() {
       var s = SLIDES[idx];
       api.slide = s;
       api.zones = {}; api.pins = {};
-      stage.innerHTML = '';
-      page.textContent = 'Slide ' + s.no + '/' + TOTAL_SLIDES;
+      canvas.innerHTML = '';
+      pgLabel.textContent = 'Slide ' + s.no + ' / ' + TOTAL_SLIDES;
       prev.disabled = idx === 0;
       next.disabled = idx === SLIDES.length - 1;
 
-      if (!s.img) {
-        stage.appendChild(el('div', 'blank',
+      var hasImg = !!s.img;
+      zOut.disabled = zIn.disabled = zFit.disabled = !hasImg;
+
+      if (!hasImg) {
+        canvas.appendChild(el('div', 'blank',
           '<div><b>Slide ' + s.no + ' — ' + s.title + '</b><br>' +
           'Prototype chỉ dựng dữ liệu ghi chú cho <b>Slide 5</b>.<br>' +
-          'Bấm ' + (idx === 0 ? '▶' : '◀') + ' để quay lại slide đang ôn.</div>'));
+          'Bấm ' + (idx === 0 ? '"Slide tiếp theo"' : '"Slide trước"') + ' để quay lại slide đang ôn.</div>'));
+        hint.style.display = 'none';
         cfg.onSlide && cfg.onSlide(s, api);
         return;
       }
+      hint.style.display = cfg.hint ? '' : 'none';
 
       var wrap = el('div', 'slidewrap');
       var img = el('img');
       img.src = s.img;
       img.alt = s.title;
+      img.addEventListener('load', fit);
       wrap.appendChild(img);
 
       s.notes.forEach(function (n) {
@@ -196,7 +269,7 @@
         api.zones[n.id] = z;
 
         var p = el('div', 'pin', n.id + '<span class="tip"><b>' + n.kind + '</b><br>' +
-          n.plain + '<br><i style="opacity:.7">' + n.meta + '</i></span>');
+          n.plain + '<br><i style="opacity:.75">' + n.meta + '</i></span>');
         p.style.left = n.rect.l + '%';
         p.style.top = n.rect.t + '%';
         p.addEventListener('click', function () { api.lit(n.id); });
@@ -204,8 +277,8 @@
         api.pins[n.id] = p;
       });
 
-      stage.appendChild(wrap);
-      if (cfg.hint) stage.appendChild(el('div', 'hint', cfg.hint));
+      canvas.appendChild(wrap);
+      setZoom(zoom);
       cfg.onSlide && cfg.onSlide(s, api);
     }
 
@@ -213,6 +286,7 @@
     next.onclick = function () { if (idx < SLIDES.length - 1) { idx++; drawSlide(); } };
 
     drawSlide();
+    requestAnimationFrame(fit);
     return api;
   }
 
