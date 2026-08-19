@@ -1,0 +1,2 @@
+- Đức: tính năng hỏi đáp đang hơi chậm và bên cạnh đó nên thêm nút "?" để khi ấn vào hình ảnh thì có thể hỏi đáp luôn tại đó thay vì chụp ảnh như hiện tại
+- 

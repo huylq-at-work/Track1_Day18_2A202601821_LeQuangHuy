@@ -1,0 +1,11 @@
+# API key thật — không bao giờ commit
+.env
+.env.local
+.env.*.local
+
+# rác hệ điều hành / editor
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+__pycache__/

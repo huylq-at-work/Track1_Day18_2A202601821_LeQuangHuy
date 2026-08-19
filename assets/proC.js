@@ -1,206 +1,205 @@
 /* ==========================================================================
-   proC.js — Option C: AI LÀM SẴN HẾT, NGƯỜI DÙNG XEM VÀ SỬA (Trần Đức Bảo phụ trách)
+   proC.js — Option C: AI TỰ LÀM SẴN, NGƯỜI DÙNG CHỈ ĐỌC
+             (Trần Đức Bảo phụ trách)
 
-   Mở trang là AI đã soạn xong: 3 ý chính + 1 đoạn giải thích + 3 câu hỏi.
-   Không hỏi trước, nhưng luôn giữ bản ghi chú gốc và cho quay lại tức thì.
-   Chia tab để toàn bộ nằm gọn trong một màn hình.
+   Mở trang là AI tự đọc nội dung slide và hiện ra ngay, không hỏi trước:
+     - một bản tóm tắt khoảng 3 dòng để đọc trước,
+     - tối đa 3 ý chính kèm phần bám vào chữ trên slide.
+   Guardrail: luôn giữ bản gốc, có nút quay lại và sửa từng phần.
+
+   Tab "Ghi chú gốc" và "Tổng hợp" dùng chung module notesview.js với Option B.
    ========================================================================== */
 (function () {
   'use strict';
 
-  var IDEAS = [
-    {
-      note: 1, h: '1. Sơ đồ chỉ dùng khi LLM/VLM không tự trả lời được',
-      c: 'Toàn bộ nhánh Data bên dưới chỉ có ý nghĩa khi model <b>không có sẵn</b> câu trả lời trong tri thức của nó. Model đã biết rồi thì không cần tới các nhánh này.'
-    },
-    {
-      note: 2, h: '2. Cả ba nhánh đều đổ về một chỗ: Data',
-      c: 'In-Context, RAG và Finetuning là ba đường khác nhau nhưng đều nhằm đưa <b>Data</b> lên cho LLM/VLM. Khác nhau ở <i>cách</i> đưa vào, không phải ở <i>cái</i> đưa vào.'
-    },
-    {
-      note: 2, h: '3. Day 07 đi theo nhánh RAG',
-      c: 'RAG = đưa <b>đúng</b> dữ liệu cần thiết vào agent, thay vì phải sửa hay đào tạo lại model. Đó là lý do cả buổi tập trung vào nhánh này.'
-    }
-  ];
-
-  var EXPLAIN = {
-    note: 3,
-    h: 'Khi nào dùng In-Context, khi nào RAG, khi nào Finetuning?',
-    c: 'Hỏi lần lượt 3 câu là ra:<br>' +
-      '<b>1.</b> Dữ liệu ngắn, nhét thẳng vào câu hỏi được không? → <b>In-Context</b> (slide ghi: "dữ liệu ngắn").<br>' +
-      '<b>2.</b> Dữ liệu quá lớn, chỉ cần lôi ra đúng đoạn liên quan? → <b>RAG</b> (slide ghi: "corpus lớn").<br>' +
-      '<b>3.</b> Vấn đề nằm ở cách model diễn đạt? → <b>Finetuning</b> (slide ghi: "cần style riêng").<br>' +
-      '<i>Mẹo:</i> hai nhánh đầu chỉ đổi <b>dữ liệu đưa vào</b>, riêng nhánh ba mới đụng vào <b>chính model</b>.'
-  };
-
-  var QUIZ = {
-    'Cơ bản': [
-      { note: 1, q: 'Sơ đồ này áp dụng trong trường hợp nào?', a: ['Khi LLM/VLM không có sẵn câu trả lời', 'Khi LLM/VLM trả lời quá chậm', 'Khi người dùng hỏi sai câu'], r: 0 },
-      { note: 2, q: 'Ba nhánh cùng đẩy cái gì lên cho LLM/VLM?', a: ['Câu hỏi', 'Data', 'Câu trả lời'], r: 1 },
-      { note: 2, q: 'Day 07 tập trung vào nhánh nào?', a: ['In-Context', 'Finetuning', 'RAG'], r: 2 }
-    ],
-    'Nâng cao': [
-      { note: 3, q: 'Kho 5.000 trang, cần trả lời đúng theo tài liệu đó. Nhánh nào hợp nhất?', a: ['In-Context — nhét cả 5.000 trang vào câu hỏi', 'RAG — tìm đúng đoạn liên quan rồi mới đưa cho model', 'Finetuning — dạy lại model bằng 5.000 trang'], r: 1 },
-      { note: 3, q: 'Nhánh nào là nhánh DUY NHẤT thay đổi chính bản thân model?', a: ['In-Context', 'RAG', 'Finetuning'], r: 2 },
-      { note: 2, q: 'Vì sao nói RAG là "đưa đúng dữ liệu vào agent thay vì đổi model"?', a: ['Vì RAG chỉ can thiệp vào dữ liệu đưa vào, giữ nguyên model', 'Vì RAG huấn luyện lại model bằng dữ liệu mới', 'Vì RAG thay LLM bằng model nhỏ hơn'], r: 0 }
-    ]
-  };
-
-  var tab = 'y', level = 'Cơ bản', raw = false;
+  var data = null, busy = false, err = null;
+  var tab = 'ai';           // 'ai' | 'chat' | 'notes' | 'sum'
+  var chat = null;          // khung trò chuyện thời gian thực (Chat)
+  var notesView = null;     // khối "Ghi chú gốc" / "Tổng hợp" (NotesView)
   var app, head, tabs, body, foot;
 
   Core.init({
     option: 'C',
     brand: '#4338ca',
-    title: 'Option C — AI làm sẵn hết, người dùng xem và sửa',
-    subtitle: 'Trần Đức Bảo phụ trách · AI tự soạn ngay khi mở trang, luôn có đường quay lại',
-    hint: 'Bấm nhãn nguồn trong mỗi mục để nháy sáng đúng vùng slide mà AI lấy ý ra.',
+    title: 'Option C — AI làm sẵn hết, bạn chỉ đọc',
+    subtitle: 'Trần Đức Bảo phụ trách · AI tự tổng hợp ngay khi mở trang',
+    hint: 'Bản tóm tắt bên phải do AI tự sinh khi trang vừa mở — bạn không phải bấm gì.',
     onSlide: function (slide, a) {
       app = a;
-      if (!slide.img) { renderEmpty(); return; }
-      a.markAll(true);
       shell();
-      draw();
-    }
+      if (slide.img && !data && !busy) fetchDigest();
+      else draw();
+    },
+    onKey: function () { if (app && app.slide.img && !data) fetchDigest(); else draw(); }
   });
+
+  /* ---------- gọi AI ngay, không xin phép ---------- */
+  function fetchDigest() {
+    if (!window.AI || !AI.on()) { draw(); return; }
+    busy = true; err = null;
+    draw();
+
+    AI.call({
+      maxTokens: 8000,
+      schema: {
+        type: 'object',
+        properties: {
+          summary: { type: 'string' },
+          ideas: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                title: { type: 'string' },
+                detail: { type: 'string' },
+                quote: { type: 'string' }
+              },
+              required: ['title', 'detail', 'quote'],
+              additionalProperties: false
+            }
+          }
+        },
+        required: ['summary', 'ideas'],
+        additionalProperties: false
+      },
+      system:
+        'Bạn là trợ giảng cho sinh viên Việt Nam. Trả lời hoàn toàn bằng tiếng Việt. ' +
+        'Chỉ dùng thông tin có trong nội dung slide được đưa, không bịa thêm. ' +
+        '"summary": tóm tắt slide trong khoảng 3 dòng (2–3 câu ngắn), để người học đọc lướt trước. ' +
+        '"ideas": TỐI ĐA 3 ý chính, mỗi ý gồm "title" (một dòng ngắn), ' +
+        '"detail" (2–3 câu giải thích) và "quote" (trích đúng cụm chữ xuất hiện trên slide ' +
+        'mà ý đó dựa vào, để người học đối chiếu).',
+      user: 'Nội dung slide:\n' + app.slide.content
+    }).then(function (out) {
+      busy = false;
+      out.ideas = (out.ideas || []).slice(0, 3);
+      data = out;
+      draw();
+    }).catch(function (e) {
+      busy = false; err = e.message; draw();
+    });
+  }
 
   /* ---------- khung panel ---------- */
   function shell() {
     app.dock.innerHTML = '';
     head = Core.el('div', 'dock-head',
       '<h2>Bài ôn tập AI tự soạn</h2>' +
-      '<div class="lead">Đã tạo xong ngay khi bạn mở trang — không cần bấm gì.</div>');
+      '<div class="lead">Tạo tự động ngay khi bạn mở trang — không cần bấm gì.</div>');
     tabs = Core.el('div', 'tabs');
     body = Core.el('div', 'dock-body');
     foot = Core.el('div', 'dock-foot');
     app.dock.append(head, tabs, body, foot);
 
-    [['y', 'Ý chính'], ['g', 'Giải thích'], ['q', 'Câu hỏi']].forEach(function (t) {
+    [['ai', 'Bản AI'], ['chat', 'Trò chuyện'],
+    ['notes', 'Ghi chú gốc'], ['sum', 'Tổng hợp']].forEach(function (t) {
       var b = Core.el('button', '', t[1]);
       b.dataset.tab = t[0];
-      b.onclick = function () { tab = t[0]; raw = false; draw(); };
+      b.onclick = function () {
+        if (tab === t[0]) return;
+        tab = t[0];
+        if (tab !== 'chat' && chat) chat.unmount();
+        draw();
+      };
       tabs.appendChild(b);
     });
+    if (!notesView) notesView = NotesView.create(app);
   }
 
-  function renderEmpty() {
-    app.dock.innerHTML = '';
-    var h = Core.el('div', 'dock-head', '<h2>Bài ôn tập AI tự soạn</h2>');
-    var b = Core.el('div', 'dock-body');
-    b.appendChild(Core.el('div', 'notice slate',
-      'Trang slide này chưa có ghi chú nên AI chưa soạn gì. Quay lại <b>Slide 5</b>.'));
-    app.dock.append(h, b);
-  }
+  /* Đăng ký đúng một lần (không đặt trong shell(), kẻo mỗi lần đổi slide
+     lại cộng dồn thêm một listener) */
+  Notes.onChange(function () {
+    if (app && (tab === 'notes' || tab === 'sum')) draw();
+  });
 
-  /* ---------- vẽ nội dung ---------- */
   function draw() {
+    if (!app || !body) return;
     body.innerHTML = '';
     foot.innerHTML = '';
-    tabs.style.display = raw ? 'none' : '';
-    [].forEach.call(tabs.children, function (b) { b.classList.toggle('on', b.dataset.tab === tab); });
+    [].forEach.call(tabs.children, function (b) {
+      b.classList.toggle('on', b.dataset.tab === tab);
+    });
 
-    if (raw) { drawRaw(); } else if (tab === 'y') { drawIdeas(); }
-    else if (tab === 'g') { drawExplain(); } else { drawQuiz(); }
-
-    drawFoot();
+    if (!app.slide.img) {
+      body.appendChild(Core.el('div', 'notice slate',
+        'Trang slide này chưa có nội dung. Quay lại <b>Slide 5</b>.'));
+      return;
+    }
+    if (tab === 'chat') return drawChat();
+    app.captureOff();
+    if (tab === 'notes') return notesView.mountRaw(body, foot);
+    if (tab === 'sum') return notesView.mountSummary(body, foot);
+    if (busy) { body.appendChild(AI.loading('AI đang đọc slide và tóm tắt...')); return; }
+    if (!window.AI || !AI.on()) {
+      body.appendChild(AI.offNotice(
+        'AI chưa được kết nối nên chưa tự soạn được gì.', function () { fetchDigest(); }));
+      return;
+    }
+    if (err) {
+      body.appendChild(Core.el('div', 'notice amber', '⚠️ ' + esc(err)));
+      var again = Core.el('button', 'btn sm', 'Thử lại');
+      again.onclick = fetchDigest;
+      body.appendChild(again);
+      return;
+    }
+    if (!data) return;
+    drawDigest();
   }
 
-  function banner() {
-    return Core.el('div', 'notice amber',
-      '🤖 <b>AI đã tự soạn bản này</b> từ 3 mẩu ghi chú của bạn — không phải đáp án chính thức đã được kiểm chứng.');
+  /* ---------- bản AI soạn ---------- */
+  function drawDigest() {
+    body.appendChild(Core.el('div', 'notice amber',
+      '🤖 <b>AI đã tự soạn bản này</b> ngay khi trang mở, không hỏi bạn trước — ' +
+      'đây không phải đáp án chính thức đã được kiểm chứng.'));
+
+    /* tóm tắt ~3 dòng, đọc trước */
+    var s = Core.el('div', 'card sumcard',
+      '<h3>📄 Đọc nhanh 3 dòng <span class="aitag">AI VIẾT</span></h3>' +
+      '<div class="tx">' + esc(data.summary).replace(/\n/g, '<br>') + '</div>');
+    s.appendChild(editBtn(s));
+    body.appendChild(s);
+
+    if (!data.ideas.length) return;
+    body.appendChild(Core.el('div', 'seclabel',
+      'Ý chính <span class="count">' + data.ideas.length + '/3</span>'));
+
+    data.ideas.forEach(function (it, i) {
+      var c = Core.el('div', 'card',
+        '<h3>' + (i + 1) + '. ' + esc(it.title) + '</h3>' +
+        '<div class="tx">' + esc(it.detail) + '</div>');
+      c.appendChild(Core.el('div', 'quote', '“' + esc(it.quote) + '” — chữ trên slide'));
+      c.appendChild(editBtn(c));
+      body.appendChild(c);
+    });
+
+    var redo = Core.el('button', 'btn sm', '↻ Soạn lại');
+    redo.onclick = fetchDigest;
+    foot.appendChild(redo);
+    foot.appendChild(Core.el('span', 'muted', 'Sửa được từng phần bất cứ lúc nào.'));
   }
 
-  function srcChip(noteId, label) {
-    var s = Core.el('div', 'src', '📍 ' + label);
-    s.onclick = function () { app.lit(noteId); };
-    return s;
-  }
-
-  function editable(card) {
+  function editBtn(card) {
     var b = Core.el('button', 'btn sm', '✎ Sửa phần này');
-    b.style.marginTop = '8px';
+    b.style.marginTop = '9px';
     b.onclick = function () {
       var tx = card.querySelector('.tx');
-      var on = tx.isContentEditable;
-      tx.contentEditable = !on;
-      b.textContent = on ? '✎ Sửa phần này' : '✓ Xong sửa';
-      if (!on) tx.focus();
+      var onEd = tx.isContentEditable;
+      tx.contentEditable = !onEd;
+      b.textContent = onEd ? '✎ Sửa phần này' : '✓ Xong sửa';
+      if (!onEd) tx.focus();
     };
     return b;
   }
 
-  function drawIdeas() {
-    body.appendChild(banner());
-    IDEAS.forEach(function (i) {
-      var c = Core.el('div', 'card', '<h3>' + i.h + '</h3><div class="tx">' + i.c + '</div>');
-      c.appendChild(srcChip(i.note, 'Lấy ý từ vùng đánh dấu ' + i.note + ' trên slide'));
-      c.appendChild(editable(c));
-      body.appendChild(c);
+  /* ---------- trò chuyện thời gian thực ---------- */
+  function drawChat() {
+    if (!chat) chat = Chat.create(app, { context: app.slide.content });
+    chat.mount(body, foot);
+  }
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c];
     });
-  }
-
-  function drawExplain() {
-    body.appendChild(banner());
-    var c = Core.el('div', 'card',
-      '<h3>' + EXPLAIN.h + ' <span class="aitag">AI TỰ VIẾT</span></h3><div class="tx">' + EXPLAIN.c + '</div>');
-    c.style.borderLeft = '4px solid #4338ca';
-    c.appendChild(srcChip(EXPLAIN.note, 'Lấy từ chỗ bạn đánh dấu "chưa hiểu"'));
-    c.appendChild(editable(c));
-    body.appendChild(c);
-  }
-
-  function drawQuiz() {
-    body.appendChild(Core.el('div', 'notice amber',
-      '⚠️ <b>Câu hỏi do AI tự đặt, chưa ai kiểm tra lại</b> — khác với phần tóm tắt vốn bám sát chữ trên slide.'));
-
-    QUIZ[level].forEach(function (item, i) {
-      var c = Core.el('div', 'card', '<h3>Câu ' + (i + 1) + '. ' + item.q + '</h3>');
-      item.a.forEach(function (t, j) {
-        var b = Core.el('button', 'opt', t);
-        b.onclick = function () {
-          [].forEach.call(c.querySelectorAll('.opt'), function (o, k) {
-            o.disabled = true;
-            if (k === item.r) o.classList.add('right');
-          });
-          if (j !== item.r) b.classList.add('wrong');
-          c.querySelector('.res').textContent =
-            (j === item.r) ? '✓ Đúng rồi.' : '✗ Chưa đúng — đáp án đúng đã tô xanh.';
-          app.lit(item.note, 1100);
-        };
-        c.appendChild(b);
-      });
-      c.appendChild(Core.el('div', 'res', ''));
-      c.appendChild(srcChip(item.note, 'Vùng liên quan trên slide'));
-      body.appendChild(c);
-    });
-  }
-
-  function drawRaw() {
-    body.appendChild(Core.el('div', 'notice amber',
-      '↺ Đang xem <b>3 mẩu ghi chú gốc</b> — chưa qua xử lý của AI. Bản AI soạn vẫn được giữ nguyên.'));
-    app.slide.notes.forEach(function (n) {
-      var c = Core.el('div', 'card', '<div class="tx">' + n.text + '</div>');
-      c.style.borderLeft = '4px solid #94a3b8';
-      c.appendChild(srcChip(n.id, n.meta));
-      body.appendChild(c);
-    });
-  }
-
-  /* ---------- thanh dưới: rollback + độ khó ---------- */
-  function drawFoot() {
-    var bBack = Core.el('button', 'btn sm ' + (raw ? 'pri' : 'warnb'),
-      raw ? '↩ Xem lại bài AI soạn' : '↺ Quay lại ghi chú gốc');
-    bBack.onclick = function () { raw = !raw; draw(); };
-    foot.appendChild(bBack);
-
-    if (!raw && tab === 'q') {
-      var bLv = Core.el('button', 'btn sm', 'Độ khó: ' + level);
-      bLv.onclick = function () {
-        level = (level === 'Cơ bản') ? 'Nâng cao' : 'Cơ bản';
-        draw();
-      };
-      foot.appendChild(bLv);
-    }
-    foot.appendChild(Core.el('span', 'muted', raw ? 'Bản gốc luôn được giữ song song.' : 'Sửa được từng phần bất cứ lúc nào.'));
   }
 })();
