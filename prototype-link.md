@@ -1,6 +1,6 @@
 # Prototype Link — Nhóm cuong, Day 18
 
-**Case B** — AI Notes: Personal Learning Notes
+**Case B** — AI Notes: Personal Learning Notes  
 Bốn option: A (Huy) · B (Cường) · C (Bảo) · D (Quân)
 
 ---
@@ -25,10 +25,10 @@ Hướng dẫn dùng: [prototype/README.md](prototype/README.md)
 
 | Option | File | Phụ trách |
 |---|---|---|
-| A | [proA.html](proA.html) | Trần Đức Bảo dựng khung |
-| B | [proB.html](proB.html) | Trần Đức Bảo dựng khung |
+| A | [proA.html](proA.html) | Lê Quang Huy |
+| B | [proB.html](proB.html) | Đàm Việt Cường (Smart Dwell Trigger & Card Review) |
 | C | [proC.html](proC.html) | Trần Đức Bảo |
-| D | [proD.html](proD.html) | Lê Quang Huy dựng, theo thiết kế của Hoàng Minh Quân |
+| D | [proD.html](proD.html) | Hoàng Minh Quân |
 
 Chạy trên slide thật, gọi model thật. Cách chạy:
 
@@ -42,7 +42,7 @@ Dán `OPENAI_API_KEY` vào `.env`, rồi:
 python serve.py
 ```
 
-Mở `http://localhost:8000/proA.html`. Key nằm ở phía server, không xuống trình duyệt.
+Mở `http://localhost:8000/proA.html` (hoặc `proB.html`, `proC.html`, `proD.html`). Key nằm ở phía server, không xuống trình duyệt.
 `.env` đã nằm trong `.gitignore` — **không commit key vào repo**.
 
 > **Vì sao bộ này không dùng cho vòng so sánh:** gọi model thật thì hai tester chạy cùng một
@@ -51,12 +51,11 @@ Mở `http://localhost:8000/proA.html`. Key nằm ở phía server, không xuố
 
 ---
 
-## 3. Bản đào sâu Option B
+## 3. Bản đào sâu Option B (Đàm Việt Cường)
 
 **[prototype-option-b.html](prototype-option-b.html)** — Đàm Việt Cường.
 
-Chỉ Option B, nhưng có thêm **màn luyện tập trắc nghiệm thật** mà bản chung không có. Chạy sau
-vòng so sánh, khi cần xem bước tiếp theo sau khoảnh khắc duyệt thẻ.
+Chỉ Option B, nhưng có thêm **màn luyện tập trắc nghiệm thật (Active Recall Quiz Mode)** với micro-interactions, modal chỉnh sửa trực tiếp (Inline Edit), đổi câu hỏi (Regenerate), duyệt nhanh (Batch Accept) mà bản chung không có. Chạy sau vòng so sánh, khi cần xem bước tiếp theo sau khoảnh khắc duyệt thẻ.
 
 ---
 
@@ -65,4 +64,5 @@ vòng so sánh, khi cần xem bước tiếp theo sau khoảnh khắc duyệt th
 - [three-option-design-sheet.md](three-option-design-sheet.md) — design sheet gốc
 - [02-three-solution-options.md](02-three-solution-options.md) — bốn option, distance check
 - [03-human-ai-design-pass.md](03-human-ai-design-pass.md) — Human–AI Decision Table bốn cột
+- [03-human-ai-design-damvietcuong.md](03-human-ai-design-damvietcuong.md) — Human–AI Design chi tiết Option B (Đàm Việt Cường)
 - [04-micro-prototype.md](04-micro-prototype.md) — cấu trúc màn hình và những thứ prototype cố tình không làm

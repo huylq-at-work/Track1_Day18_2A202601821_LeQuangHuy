@@ -1,13 +1,13 @@
 # Prototype Feedback Note — Lê Quang Huy
 
-**Người facilitate:** Lê Quang Huy — 2A202601821
-**Nhóm:** cuong · **Case B** — AI Notes: Personal Learning Notes
-**Prototype:** [prototype/index.html](prototype/index.html) — bản chung bốn option
-**Ngày:** 19/08/2026
+**Người facilitate:** Lê Quang Huy — 2A202601821  
+**Nhóm:** cuong · **Case B** — AI Notes: Personal Learning Notes  
+**Prototype:** [prototype/index.html](prototype/index.html) — bản chung bốn option  
+**Ngày:** 19/08/2026  
 
-**Tester:** anh Coach Lab — **chưa kịp hỏi tên**
-**Ngoài nhóm:** Có. Không phải thành viên nhóm, không phải interviewee Day 17.
-**Có context liên quan:** Có — cũng là sinh viên, vẫn đang đi học và ôn bài.
+**Tester:** anh Coach Lab — **chưa kịp hỏi tên**  
+**Ngoài nhóm:** Có. Không phải thành viên nhóm, không phải interviewee Day 17.  
+**Có context liên quan:** Có — cũng là sinh viên, vẫn đang đi học và ôn bài.  
 
 > **Đúng chân dung target user.** Anh Coach Lab cũng là học sinh — sinh viên, cũng ôn bài như
 > đối tượng mô tả trong Hypothesis Problem. Vai trò coach là việc bạn ấy làm thêm, không làm
@@ -16,8 +16,8 @@
 > Một điểm cần nhớ khi đọc kết quả: bạn ấy **đã nắm nội dung bài học** dùng làm fixture. Xem
 > mục "Giới hạn của phiên này".
 
-**Thứ tự mở option:** D → C → A → B, sau đó đảo qua lại nhiều lần
-**Thời lượng:** 10:09:38 → 10:22:57 — 13 phút 19 giây
+**Thứ tự mở option:** D → C → A → B, sau đó đảo qua lại nhiều lần  
+**Thời lượng:** 10:09:38 → 10:22:57 — 13 phút 19 giây  
 
 ---
 

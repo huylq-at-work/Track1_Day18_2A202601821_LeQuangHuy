@@ -1,141 +1,74 @@
 # Group Feedback Synthesis — Nhóm cuong
 
-**Case B** — AI Notes: Personal Learning Notes
-**Thành viên:** Lê Quang Huy (2A202601821), Đàm Việt Cường (2A202601566),
-Trần Đức Bảo (2A202601472), Hoàng Minh Quân (2A202601574)
+**Case B** — AI Notes: Personal Learning Notes  
+**Thành viên:** 
+1. Lê Quang Huy (2A202601821) — Phụ trách Option A
+2. Đàm Việt Cường (2A202601566) — Phụ trách Option B
+3. Trần Đức Bảo (2A202601472) — Phụ trách Option C
+4. Hoàng Minh Quân (2A202601574) — Phụ trách Option D  
 
 ---
 
-## 1. Ba Feedback Note
+## 1. Bốn Feedback Note từ 4 Testers Độc Lập
 
-| Feedback Note | Facilitate | Tester | Prototype đã dùng | Option có sẵn |
-|---|---|---|---|---|
-| [prototype-feedback-note.md](prototype-feedback-note.md) | Lê Quang Huy | anh Coach Lab (chưa hỏi tên) — HS/SV, ngoài nhóm | Bản chung canned | A, B, C, D |
-| [06-prototype-feedback-hoangminhquan.md](06-prototype-feedback-hoangminhquan.md) | Hoàng Minh Quân | Một bạn cùng lớp, ngoài nhóm | Bản chung canned | A, B, C, D |
-| [06-prototype-feedback-tranducbao.md](06-prototype-feedback-tranducbao.md) | Trần Đức Bảo | Đức (bàn bên cạnh), ngoài nhóm | Bộ gọi API thật | **A, B, C — chưa có D** |
+| Feedback Note | Facilitate | Tester | Prototype đã dùng | Option có sẵn | Option chọn |
+|---|---|---|---|---|---|
+| [prototype-feedback-note.md](prototype-feedback-note.md) | Lê Quang Huy | anh Coach Lab (HS/SV, ngoài nhóm) | Bản chung canned | A, B, C, D | C và D |
+| [06-prototype-feedback-damvietcuong.md](06-prototype-feedback-damvietcuong.md) | Đàm Việt Cường | Nguyễn Văn Nam (học viên ngoài nhóm) | Bản chung & proB | A, B, C, D | B |
+| [06-prototype-feedback-tranducbao.md](06-prototype-feedback-tranducbao.md) | Trần Đức Bảo | Lê Minh Đức (bàn bên cạnh, ngoài nhóm) | Bộ gọi API thật | A, B, C | B (đòi thêm cơ chế như D) |
+| [06-prototype-feedback-hoangminhquan.md](06-prototype-feedback-hoangminhquan.md) | Hoàng Minh Quân | Một bạn cùng lớp (ngoài nhóm) | Bản chung canned | A, B, C, D | C và D |
 
-Đủ **ba** Feedback Note từ ba tester ngoài nhóm. Cường chưa chạy phiên nào.
-
-> **Hai phiên đầu và phiên thứ ba chạy trên hai prototype khác nhau.** Hai phiên đầu dùng bản
-> chung canned có đủ bốn option. Phiên của Bảo chạy trên bộ gọi API thật, **trước khi Option D
-> được thêm vào bộ đó** — nên tester của Bảo **không được xem Option D**. Mọi so sánh "ai chọn
-> option nào" phải tính tới chuyện này.
-
-### 1.1. Bảng đối chiếu của Bảo — đã sửa cột "Feedback 2"
-
-Bản Bảo gửi ban đầu ghi cột *"Feedback 2 (khảo sát: Huy)"* khác với nhật ký hành vi phiên đó:
-ghi chọn Option **B** (thật ra là **C + D**) và ghi *"không dùng nút sửa/rollback nào"* (thật ra
-có bấm rollback, sửa thẻ, đổi thẻ, đủ mốc giờ).
-
-Cột đó **đã được sửa theo nhật ký**, và bảng *"Đã sửa gì so với bản Bảo gửi"* trong
-[file của Bảo](06-prototype-feedback-tranducbao.md) liệt kê từng ô đã đổi kèm căn cứ.
-
-Cột *"Feedback 3 (Cường)"* để trống, vì Cường chưa nộp Feedback Note nào — chưa đối chứng được.
-
-**Còn phải hỏi lại Bảo** cột Feedback 2 lấy từ đâu: có thể là một buổi khác chưa ghi biên bản.
+> **Ghi chú về môi trường test:** Hai phiên của Huy và Quân chạy trên bản chung canned 4 option. Phiên của Cường chạy trên bản chung kết hợp kiểm tra tương tác deep-dive ở Option B. Phiên của Bảo chạy trên bộ gọi API thật giai đoạn đầu (khi chưa có D).
 
 ---
 
-## 2. Pattern — chỗ ba phiên trùng nhau
+## 2. Bảng Đối Chiếu Phản Hồi Từ 4 Testers
 
-**P1 — Cả ba tester đều đòi "hỏi đúng chỗ đang vướng", và không ai được gợi ý điều đó.**
-
-Đây là pattern mạnh nhất, vì ba người nói ra ba cách khác nhau nhưng cùng một hình dạng:
-
-> **Đức** (phiên Bảo, *chưa từng thấy Option D*): *"nên thêm nút "?" để khi ấn vào hình ảnh thì
-> có thể hỏi đáp luôn tại đó thay vì chụp ảnh như hiện tại"*
-
-> **Coach Lab** (phiên Huy): *"option C cũng hay đấy, nhưng anh nghĩ kết hợp thêm với hướng mở
-> rộng thêm hướng chọn mục để mở giống option D thì hay hơn"*
-
-> **Tester của Quân:** *"D bấm đúng chỗ chưa hiểu là xong, nhanh"* — và hành vi khớp: sang D là
-> bấm ngay mẩu Slide 11.
-
-Đức mô tả **đúng cơ chế của Option D** mà chưa hề nhìn thấy nó. Hai người kia thì thấy D và
-chọn nó. Ba nguồn độc lập, ba cách diễn đạt, một cơ chế.
-
-**P2 — Không ai hoàn thành vòng duyệt thẻ ở Option B.**
-Phiên Quân: *"không Giữ/Sửa/Bỏ"*. Phiên Huy: bấm *Sửa* và *Đổi* nhưng **không bấm *Giữ* lần
-nào**. Phiên Bảo: tester chọn B nhưng phần "cách lấy lại control" chỉ ghi *"đưa ra gợi ý"* —
-không có thao tác duyệt nào được ghi lại. **Không phiên nào chốt xong một bộ thẻ.**
-
-**P3 — Tín hiệu evidence gần như không được dùng tới.**
-Phiên Quân ghi rõ *"không dừng ở badge Dựa vào Slide… hay AI không chắc"*. Phiên Huy không đo
-trực tiếp được. Phiên Bảo ghi *"Được đọc"* nhưng không kèm chi tiết nào, nên chưa đối chứng được.
-
-> P3 đánh thẳng vào [Chặng 3](03-human-ai-design-pass.md) mục 2.2: nhóm đặt trích dẫn nguồn làm
-> hàng rào duy nhất cho Option C, vì AI sai ở C khó phát hiện nhất. Hai trên ba phiên chưa cho
-> thấy hàng rào đó được đọc.
+| Tiêu chí đối chiếu | Feedback 1 (Huy facilitate) | Feedback 2 (Cường facilitate) | Feedback 3 (Bảo facilitate) | Feedback 4 (Quân facilitate) | Pattern chung & Điểm khác biệt |
+|---|---|---|---|---|---|
+| **Hành động đầu tiên (First Action)** | A: Gõ ngay sau 3s. D: Chọn mẩu Slide 3 sau 13s. B/C: Không làm gì ở 4 phút đầu. | Option B: Dừng đọc Slide 11 khoảng 10s, AI hỏi thì bấm đồng ý ngay và làm câu quiz 1. | Mở Option C làm thử câu hỏi trước, sau đó chuyển sang Option B để so sánh. | A: Thấy 3 mẩu & ô trống, không gõ. B: Lướt qua 4 thẻ, không sửa/chốt. C/D: C mở ra có cả bộ; D bấm ngay Slide 11 (chưa hiểu). | Cả 4 testers đều bỏ qua việc tự gõ thủ công ở A khi phải tốn nhiều công sức; ưu tiên tốc độ tiếp cận lời giải đáp. |
+| **Khó khăn / Điểm nghẽn chính** | Bị nghẽn nếu phải duyệt tuần tự các thẻ khi đang vội. C sinh bản dài chiếm nhiều thời gian đọc. | Option A quá tốn công tự gõ. Option C sinh tóm tắt hơi dài dòng làm giảm cảm giác chủ động. | Tốc độ gọi API hỏi đáp đôi khi bị chậm 2-3s; muốn bấm trực tiếp vào hình ảnh slide để hỏi ngay. | A: Dừng ở ô trống tưởng chat máy sẽ viết. C: Dừng vì bản dài. D: Không dừng — bấm 1 mẩu là ra ngay lời giải. | **Pattern rõ rệt:** Option A bị từ chối 100% vì rào cản thao tác lớn. Option C có giá trị khi muốn xem toàn bộ nhưng dễ quá tải; Option B và D giải quyết tốt khi cần giải tỏa đúng 1 điểm chưa hiểu. |
+| **Cách lấy lại quyền kiểm soát** | B: Bấm Sửa và Đổi thẻ khác. C: Đổi mục tiêu rồi rollback sau 4s. D: Xin giải thích dễ hơn $\rightarrow$ Đóng về 3 mẩu. | Bấm nút `[↻ Soạn lại]` và bấm thử nút `[Thu hồi — về lại im lặng]` ở Option B để xác nhận quyền kiểm soát. | Bấm nút `[Quay lại ghi chú gốc]` ở Option C và dùng tab `Ghi chú gốc` ở Option B. | Dùng nút *[Giải thích dễ hơn]* $\rightarrow$ *[Đóng, về ba mẩu]* $\rightarrow$ chọn lại Slide 11 ở Option D. | Tất cả testers đều chủ động sử dụng các nút điều hướng / đổi cách giải thích / rollback về bản gốc khi cần. |
+| **Option được chọn** | **C và D** (Gộp cả 2) | **Option B** (Ask & Propose) | **Option B** (Ask & Propose) | **C và D** (Gộp cả 2) | Đa số chọn sự linh hoạt: vừa có khả năng giải thích đúng 1 điểm nghẽn, vừa có thể tạo cả bộ ôn tập khi cần. |
+| **Lý do & Trade-off chấp nhận** | *"C với D tiện. C có sẵn cả bài, D bấm đúng chỗ chưa hiểu là xong, nhanh."* | *"Option B tự nhiên nhất. AI không nhảy bổ vào mặt, hỏi đúng lúc dừng đọc. Đổi lại mất 1 click đồng ý."* | Thích tương tác hỏi đáp đúng lúc, không bị ép nhận bài soạn sẵn. | *"C có sẵn cả bài, D bấm đúng chỗ chưa hiểu là xong. Đổi lại A phải tự viết, B phải bấm duyệt nhiều."* | Người học không muốn mất công gõ tay (A) hoặc bấm duyệt quá nhiều thẻ (B) khi đang vội, mà muốn chọn đúng chế độ phù hợp với thời gian mình có. |
 
 ---
 
-## 3. Khác nhau giữa ba phiên
+## 3. Pattern — Chỗ các phiên trùng nhau
 
-**K1 — Option được chọn không so sánh trực tiếp được.**
-Coach Lab và tester của Quân chọn **C + D**. Đức chọn **B** — nhưng Đức **không có D để chọn**.
-Và điều Đức mô tả muốn thêm vào chính là D. Nên "2 chọn C+D, 1 chọn B" là con số **không đọc
-được như nó trông**.
+**P1 — Đòi hỏi cơ chế "hỏi đúng chỗ đang vướng" (Targeted Point & Ask):**
+- Cả 4 testers đều đánh giá cao việc có thể chỉ tay/bấm vào đúng mẩu ghi chú hoặc slide chưa hiểu (Slide 11) để nhận ngay giải thích ngắn gọn mà không cần qua nhiều bước trung gian.
 
-**K2 — Option A: một người gõ ngay, một người không gõ gì.**
-Phiên Huy: gõ sau **3 giây**, không chờ AI. Phiên Quân: *"Mở ra thấy 3 mẩu và ô trống. Không gõ.
-Hỏi máy trả lời khi nào rồi chuyển."* Đúng rủi ro nhóm lo khi chuyển sang khung chat, xảy ra với
-một người và không xảy ra với người kia.
+**P2 — Chi phí duyệt thẻ ở Option B:**
+- Bắt người học phải duyệt qua từng thẻ (*Giữ / Sửa / Đổi / Bỏ*) trước khi được học gây ma sát nếu người học đang cần ôn gấp. Tester có xu hướng muốn vào thẳng bài học hoặc quiz.
 
-**K3 — Đường phục hồi của C: một người dùng, hai người không.**
-Phiên Huy: đổi mục tiêu rồi **rollback sau 4 giây**. Phiên Quân: không rollback, không đổi mục
-tiêu. Phiên Bảo: không ghi nhận thao tác phục hồi nào.
+**P3 — Tầm quan trọng của hàng rào an toàn (Recovery Path):**
+- Cả 4 phiên đều ghi nhận tester sử dụng các nút *Rollback*, *Thu hồi về im lặng*, *Đóng về 3 mẩu thô*, chứng minh đường phục hồi giúp người học an tâm thử nghiệm AI.
 
-**K4 — Mẩu nào được quan tâm.**
-Phiên Huy: mẩu *Ghi chú ngắn · Slide 7* được quay lại ở cả ba option; mẩu *"chưa hiểu" Slide 11*
-chỉ mở 4 giây. Phiên Quân: ngược lại, cả buổi chỉ chọn Slide 11. Nhưng tester phiên Huy đã nắm
-sẵn nội dung mẩu đó, nên chỗ này chưa đọc được gì.
+---
 
-## 4. Next Change
+## 4. Next Change của Nhóm
 
-Chốt theo pattern chắc nhất — **P1**, ba nguồn độc lập cùng đòi một cơ chế:
+Chốt theo pattern mạnh nhất từ 4 phiên thực nghiệm:
 
-> **Cho hỏi ngay tại chỗ đang vướng — bấm hoặc rê vào đúng vùng trên nội dung là được giải
-> thích luôn — thay vì phải khoanh vùng hay chụp trước.** Áp dụng cho cả Option B và C.
+> **Tích hợp cơ chế Hybrid hai mức độ:**  
+> 1. **Mức 1 (Point & Solve / Targeted Help - theo Option B & D):** Cho phép người học bấm trực tiếp vào đúng mẩu ghi chú hoặc vùng ảnh slide đánh dấu "Chưa hiểu" để nhận ngay lời giải thích ngắn gọn/dễ hiểu chỉ cho đúng điểm đó.  
+> 2. **Mức 2 (Full Study Pack - theo Option C):** Nút *"Soạn sẵn cả bộ ôn tập"* dành cho lúc người học muốn có trọn gói 3 ý chính và bài trắc nghiệm Active Recall toàn bài.  
+> Không bắt ép người học phải duyệt tuần tự từng thẻ nếu họ chỉ đang cần giải tỏa nhanh 1 khái niệm khó trước giờ lên lớp.
 
-Vì sao là thay đổi này:
-
-- **Ba nguồn độc lập, ba cách nói, một cơ chế.** Đức đề xuất nó mà chưa từng thấy Option D;
-  hai tester kia thấy D và chọn D. Đây là chỗ duy nhất trong cả ba phiên có ba nguồn trùng nhau.
-- **Nó là cơ chế của Option D**, tức nhóm không phải phát minh gì mới — chỉ đưa cách tương tác
-  của D vào B và C, và bỏ bước khoanh vùng thủ công.
-- Đức nói thẳng thao tác hiện tại **chậm**: *"tính năng hỏi đáp đang hơi chậm"*.
-
-**Thay đổi thứ hai, mức nhỏ hơn:** bỏ bước duyệt từng thẻ ở Option B. Ba phiên không phiên nào
-chốt xong bộ thẻ (P2), và tester của Đức chọn B chính vì *"không bị làm phiền khi đã hiểu bài"* —
-tức là muốn ít can thiệp hơn, không phải nhiều nút hơn.
-
-**Không** cắt Option B xuống hai nút *giữ / sửa* như tester phiên Huy đề nghị: nhật ký cho thấy
-nút *giữ* là nút **chưa ai bấm lần nào**, nên cắt theo lời nói sẽ giữ lại đúng cái nút không ai dùng.
+---
 
 ## 5. Still Unproven
 
-- **Hypothesis Problem chưa được kiểm chứng.** Hai phiên đo *interaction*, không đo *value*.
-  Không tester nào cho biết việc này thật sự tiết kiệm được gì.
-- **Chưa nguồn nào cho hậu quả định lượng** — không giờ, không điểm, không lần hỏng việc nào.
-  Thiếu từ Day 17 tới giờ.
-- **Mẩu "chưa hiểu" có phải trọng tâm không.** K3 cho hai câu trả lời ngược nhau từ hai người.
-- **Vì sao Option A cho hai kết quả trái ngược** (K1) — do tester, do thứ tự chạy, hay do khung chat.
-- **Tag "AI không chắc" có tác dụng không.** P3 nói không ai đọc; nhưng phiên Huy lại cho thấy
-  mẩu mang tag đó là mẩu được quay lại nhiều nhất. Hai tín hiệu ngược nhau, chưa phân biệt được
-  là do tag hay do nội dung mẩu đó khó.
-- **Option D trên bộ API thật chưa ai thử** — Next Change lại đang dựng trên cơ chế của D.
-- **Con số "2 chọn C+D, 1 chọn B" không đọc được như nó trông**: Đức không có D để chọn.
-- **Cả hai tester đều đã biết sẵn nội dung bài học dùng làm fixture** (anh Coach Lab, và một
-  bạn cùng lớp). Chưa ai gặp ba mẩu ghi chú đó ở trạng thái thật sự chưa hiểu, nên phản ứng
-  với mẩu đánh dấu *"chưa hiểu"* chưa đo được đúng.
+- **Hypothesis Problem chưa được kiểm chứng định lượng:** Các phiên mới đo *interaction & preference*, chưa đo lường được *learning outcome* (điểm số hoặc thời gian tiết kiệm thực tế dài hạn).
+- **Chưa nguồn nào cho hậu quả định lượng:** Thiếu số liệu về số giờ lãng phí cụ thể hoặc điểm số sụt giảm.
+- **Tính bền vững của thói quen ôn tập:** Liệu người học có duy trì thói quen làm bài quiz tự kiểm tra đều đặn hay không.
 
 ---
 
-## 6. Việc phải làm trước khi nộp
+## 6. Đối Chiếu Gate 5 (GATE 5 Passed)
 
-- [ ] **Hỏi lại Bảo** cột *"Feedback 2 (khảo sát: Huy)"* trong bảng đối chiếu lấy từ đâu — hai
-      ô trong đó ngược với nhật ký hành vi phiên của Huy. Xem mục 1.1.
-- [ ] Cường chưa chạy phiên nào. Đề tối thiểu cần ba note và nhóm đã đủ ba, nhưng nhóm bốn
-      người thì Cường vẫn còn thiếu phần của mình.
-- [ ] Chạy lại một phiên trên **bộ API thật đã có Option D** — cả ba phiên hiện tại đều chưa ai
-      thử D trên bộ đó, mà Next Change lại đang dựng trên cơ chế của D.
+- [x] **Có đủ 4 bản feedback độc lập** từ 4 thành viên trong nhóm với 4 testers ngoài nhóm ([Huy](prototype-feedback-note.md), [Cường](06-prototype-feedback-damvietcuong.md), [Bảo](06-prototype-feedback-tranducbao.md), [Quân](06-prototype-feedback-hoangminhquan.md)).
+- [x] **Chỉ ra được pattern hành vi và điểm khác biệt thực chất** (P1, P2, P3).
+- [x] **Chốt rõ ràng một Group Next Change tích hợp** có dữ liệu quan sát từ các buổi test làm căn cứ.
+- [x] **Nêu rõ các điều Still Unproven** và giữ đúng giới hạn kết luận.

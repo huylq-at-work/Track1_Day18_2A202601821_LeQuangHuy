@@ -3,9 +3,13 @@
 .env.local
 .env.*.local
 
-# rác hệ điều hành / editor
+# Python
+__pycache__/
+*.pyc
+
+# Rác hệ điều hành / editor
 Thumbs.db
 desktop.ini
 .DS_Store
 .vscode/
-__pycache__/
+*.zip

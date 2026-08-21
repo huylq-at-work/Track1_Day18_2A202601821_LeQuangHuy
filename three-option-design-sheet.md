@@ -1,12 +1,12 @@
 # Three-Option Design Sheet — Day 18
 
-**Nhóm:** cuong  
+**Học viên:** Đàm Việt Cường | **MHV:** 2A202601566 | **Nhóm:** cuong  
 **Thành viên:** 
-1. Lê Quang Huy (2A202601821) — Option A
-2. Đàm Việt Cường (2A202601566) — Option B
-3. Trần Đức Bảo (2A202601472) — Option C
-4. Hoàng Minh Quân (2A202601574) — Option D 
-**Case B:** AI Notes — Personal Learning Notes  
+1. Lê Quang Huy (2A202601821) — Phụ trách Option A
+2. Đàm Việt Cường (2A202601566) — Phụ trách Option B
+3. Trần Đức Bảo (2A202601472) — Phụ trách Option C
+4. Hoàng Minh Quân (2A202601574) — Phụ trách Option D  
+**Case nghiên cứu:** Case B — AI Notes: Personal Learning Notes  
 
 ---
 
@@ -26,11 +26,11 @@
   - Hoàn muốn **được giải thích chỗ khó**, Mai muốn **tự kiểm tra bằng câu hỏi/quiz**.
   - Hoàn ôn vào **tối trước buổi học kế tiếp** (lệch với giả định "sau buổi học").
 - **Hypothesis Problem chốt cho Day 18 (Gate 1 Passed):**
-  > **Khi** ngồi ôn lại trước buổi học kế tiếp, **người học** khó biến các mẩu ghi chú, ảnh chụp và điểm đánh dấu chưa hiểu thành một thứ dùng lại được **vì** chúng nằm rải rác trên nhiều công cụ và phải tốn công tổng hợp thủ công mới dùng được, **dẫn đến** phải đọc lại tuần tự từ đầu hoặc đẩy sang công cụ ngoài, và không đo được mình đang hổng chỗ nào.
+  > **Khi ngồi ôn lại trước buổi học kế tiếp**, **người học** khó biến các mẩu ghi chú, ảnh chụp và điểm đánh dấu chưa hiểu thành một thứ dùng lại được **vì** chúng nằm rải rác trên nhiều công cụ và phải tốn công tổng hợp thủ công mới dùng được, **dẫn đến** phải đọc lại tuần tự từ đầu hoặc đẩy sang công cụ ngoài, và không nhận ra được mình đang hổng chỗ nào.
 
 ---
 
-## PHẦN 2: THIẾT KẾ BA SOLUTION OPTIONS (CHẶNG 2)
+## PHẦN 2: THIẾT KẾ BỐN SOLUTION OPTIONS (CHẶNG 2)
 
 ### 2.1. Những thành phần giữ nguyên chung (A / B / C / D)
 - **Target User:** Người học tham gia khóa học AI thực chiến trên nền tảng VLearn.
@@ -42,33 +42,31 @@
   - *Snippet 2 (Slide 7 - Note ngắn):* "Lưu ý 3 phản xạ: Deflect (Gạt đi), Anchor (Neo lại), Dig (Đào sâu) khi gặp lời khen hoặc đòi hỏi tính năng."
   - *Snippet 3 (Slide 11 - Ảnh chụp + Chưa hiểu):* "Phân biệt Pain (nỗi đau lúc làm job) vs Consequence (hậu quả nếu không giải quyết)."
 
-### 2.2. Bảng so sánh Option A / B / C & Phân công thành viên
+### 2.2. Bảng so sánh 4 Solution Options & Phân công thành viên
 
-| Thành phần | Option A (User-Led / Structured Hub) | Option B (Co-Creation / Interactive Co-Pilot) | Option C (AI-Led / Autonomous 1-Click Pack) |
-|---|---|---|---|
-| **Thành viên phụ trách** | **Lê Quang Huy**<br>2A202601821 | **Đàm Việt Cường**<br>2A202601566 | **Trần Đức Bảo**<br>2A202601472 |
-| **Solution Mechanism** | **Interactive Snippet Hub & Manual Binder (Zero-Inference)**: Hệ thống gom note/ảnh vào khay Dock bên phải theo slide. Cung cấp sẵn các khung mẫu (Tóm tắt / Thẻ giải thích / Thẻ Quiz). User tự kéo thả mẩu note vào khung và tự gõ nội dung. | **Interactive AI Co-Pilot (Ask & Propose with Dual Mode)**: AI phân tích các mẩu note/chưa hiểu và đề xuất 2 dạng thẻ: (1) Thẻ tóm tắt & giải thích điểm khó (cho Hoàn) và (2) Thẻ câu hỏi tự kiểm tra kèm trích dẫn slide (cho Mai). User duyệt từng thẻ (*Chấp nhận / Chỉnh sửa / Đổi câu khác*). | **Autonomous Study Digest & Mini-Quiz (Act with Guardrails & Instant Rollback)**: Hệ thống tự động tạo 100% bản tóm tắt trọn gói gồm: 3 ý cốt lõi + 1 mục giải thích điểm khó + Bộ 3 câu trắc nghiệm tự kiểm tra. Cung cấp nút *"Tùy chỉnh theo mục tiêu"* và nút *"Rollback về ghi chú thô"*. |
-| **User làm gì?** | Tự kéo thả các mẩu ghi chú vào khung mẫu, tự viết lời giải thích hoặc tự soạn câu hỏi ôn tập theo tư duy cá nhân. | Đọc các thẻ do AI đề xuất, bấm *Chấp nhận*, bấm *Sửa nội dung* hoặc bấm *Đổi câu khác*, quyết định giữ lại những phần mình thực sự cần. | Đọc ngay bản tóm tắt hoặc bấm làm bài trắc nghiệm tự kiểm tra; bấm *Rollback* nếu muốn quay về ghi chú gốc hoặc bấm *Điều chỉnh độ khó*. |
-| **AI làm gì?** | **Don't Act / Zero-Inference**: Không tự ý suy luận hay sinh text. Chỉ làm nhiệm vụ sắp xếp, lưu trữ và auto-save đồng bộ dữ liệu chống mất file. | **Ask & Propose**: Đề xuất bản thảo giải thích và câu hỏi dựa trên đúng dữ liệu note của user, hiển thị trích dẫn nguồn slide minh bạch. | **Act with Guardrails**: Tự động biên soạn hoàn chỉnh 100% tài liệu ôn tập và bài trắc nghiệm ngay khi mở trang, hỗ trợ đường khôi phục dữ liệu tức thì. |
-| **Trigger** | User chủ động mở khay tổng hợp ghi chú và bắt đầu kéo thả. | Hệ thống hiển thị popup gợi ý: *"AI đã chuẩn bị 1 thẻ giải thích điểm khó và 2 câu hỏi ôn tập từ ghi chú của bạn. Xem ngay?"*. | Tự động kích hoạt khi người học mở trang ôn tập bài cũ. |
-| **Trade-off chính** | **Ưu điểm:** Kiểm soát 100%, không lo AI sinh sai lệch.<br>**Nhược điểm:** Tốn nhiều công sức và thời gian tự soạn thảo. | **Ưu điểm:** Cân bằng hoàn hảo giữa tốc độ và quyền kiểm soát; bao phủ cả 2 nhu cầu (giải thích + tự kiểm tra).<br>**Nhược điểm:** Vẫn cần 2-3 lượt click duyệt của học viên. | **Ưu điểm:** Nhanh nhất (0 click ban đầu để có bài ôn tập hoàn chỉnh).<br>**Nhược điểm:** Nếu AI tóm tắt quá sơ sài hoặc sai ý, user có cảm giác bị áp đặt và mất thời gian chỉnh lại. |
+| Thành phần | Option A (User-Led / Structured Hub) | Option B (Co-Creation / Interactive Co-Pilot) | Option C (AI-Led / Autonomous 1-Click Pack) | Option D (On-demand / Point & Solve) |
+|---|---|---|---|---|
+| **Thành viên phụ trách** | **Lê Quang Huy**<br>2A202601821 | **Đàm Việt Cường**<br>2A202601566 | **Trần Đức Bảo**<br>2A202601472 | **Hoàng Minh Quân**<br>2A202601574 |
+| **Solution Mechanism** | **Zero-Inference / Manual Binder (`proA.html`)**: Hệ thống gom note/ảnh vào khay bên phải theo slide. Cung cấp sẵn các khung mẫu (Tóm tắt / Thẻ giải thích / Thẻ Quiz). User tự kéo thả mẩu note vào khung và tự gõ nội dung. | **Ask & Propose / Smart Dwell Trigger (`proB.html`)**: AI quan sát im lặng, chỉ chủ động hỏi thăm khi user dừng lại 10s hoặc vừa ghi chú mới. AI đề xuất thẻ tóm tắt + quiz có trích dẫn nguồn; hỗ trợ chat trực tiếp. User duyệt từng thẻ (*Đồng ý / Sửa / Đổi câu*). | **Act with Guardrails / Autonomous 1-Click (`proC.html`)**: Hệ thống tự động tạo 100% bản tóm tắt trọn gói gồm: 3 ý cốt lõi + 1 mục giải thích điểm khó + Bộ 3 câu trắc nghiệm tự kiểm tra ngay khi mở trang. Có nút *Rollback về ghi chú gốc*. | **Ask on demand / Single-Snippet Explain (`proD.html`)**: AI im hoàn toàn cho đến khi user khoanh/chỉ vào đúng một mẩu trên slide. AI sinh một lời giải ngắn gọn cho đúng mẩu đó, kèm mẩu gốc để đối chiếu. |
+| **User làm gì?** | Tự kéo thả các mẩu ghi chú vào khung mẫu, tự viết lời giải thích hoặc tự soạn câu hỏi ôn tập theo tư duy cá nhân. | Đọc các thẻ do AI đề xuất, bấm *Chấp nhận*, bấm *Sửa nội dung* hoặc bấm *Đổi câu khác*, quyết định giữ lại những phần mình thực sự cần. | Đọc ngay bản tóm tắt hoặc bấm làm bài trắc nghiệm tự kiểm tra; bấm *Rollback* nếu muốn quay về ghi chú gốc hoặc bấm *Điều chỉnh độ khó*. | Chỉ một mẩu, đọc lời giải, bấm *Giải thích dễ hơn*, hoặc *Đóng về ba mẩu thô*. |
+| **AI làm gì?** | **Don't Act / Zero-Inference**: Không tự ý suy luận hay sinh text. Chỉ làm nhiệm vụ sắp xếp, lưu trữ và auto-save đồng bộ dữ liệu chống mất file. | **Ask & Propose**: Đề xuất bản thảo giải thích và câu hỏi dựa trên đúng dữ liệu note của user, hiển thị trích dẫn nguồn slide minh bạch. | **Act with Guardrails**: Tự động biên soạn hoàn chỉnh 100% tài liệu ôn tập và bài trắc nghiệm ngay khi mở trang, hỗ trợ đường khôi phục dữ liệu tức thì. | **Ask on demand**: Không đề xuất cả bộ, chỉ giải thích đúng mẩu được chỉ và gắn nhãn "không chắc" nếu vùng khoanh không rõ. |
+| **Trigger** | User chủ động mở khay tổng hợp ghi chú và bắt đầu kéo thả. | AI nhận diện tín hiệu dừng lại 10s ở slide hoặc phát hiện ghi chú mới $\rightarrow$ hiển thị thẻ hỏi: *"Bạn có cần trợ giúp với slide này không?"*. | Tự động kích hoạt khi người học mở trang ôn tập bài cũ. | User bấm/khoanh vào một mẩu trên slide. Không popup tự động. |
+| **Trade-off chính** | **Ưu điểm:** Kiểm soát 100%, không lo AI sinh sai lệch.<br>**Nhược điểm:** Tốn nhiều công sức và thời gian tự soạn thảo. | **Ưu điểm:** Cân bằng hoàn hảo giữa tốc độ và quyền kiểm soát; bao phủ cả 2 nhu cầu (giải thích + tự kiểm tra).<br>**Nhược điểm:** Vẫn cần 2-3 lượt click duyệt của học viên. | **Ưu điểm:** Nhanh nhất (0 click ban đầu để có bài ôn tập hoàn chỉnh).<br>**Nhược điểm:** Nếu AI tóm tắt quá sơ sài hoặc sai ý, user có cảm giác bị áp đặt và mất thời gian chỉnh lại. | **Ưu điểm:** Rủi ro thấp nhất, giải quyết đúng điểm nghẽn của Hoàn.<br>**Nhược điểm:** Không tự động tạo bộ câu hỏi tự kiểm tra cho cả buổi. |
 
 ### 2.3. Distance Check & Phổ can thiệp (Gate 2 Passed)
 - **A khác B vì:** Option A hoàn toàn do con người tự biên tập nội dung từ đầu (AI không suy luận), trong khi Option B AI chủ động đề xuất sẵn các thẻ giải thích và câu hỏi để con người duyệt và tinh chỉnh.
 - **B khác C vì:** Option B yêu cầu con người tương tác duyệt từng thẻ (*Ask pattern*), trong khi Option C hệ thống tự động xuất bản trọn gói tài liệu ôn tập ngay lập tức (*Act pattern*) và con người chỉ can thiệp khi muốn rollback/điều chỉnh.
-- **A khác C vì:** Option A đòi hỏi 100% nỗ lực biên tập từ con người từ trang giấy trắng, còn Option C là trải nghiệm tự động hóa 1-click toàn diện từ AI.
+- **D khác A/B/C vì:** D đo lại chính baseline hỏi giải thích từng chỗ của Hoàn (Hướng 2), chỉ giải thích đúng 1 mẩu khi được chỉ thay vì ôm đồm cả bộ bài giảng.
 
 ```text
 [OPTION A - Lê Quang Huy] USER CREATES / INITIATES (Zero-Inference Hub & Manual Binder)
     ↓
 [OPTION D - Hoàng Minh Quân] USER POINTS, AI EXPLAINS ONE SNIPPET (Ask on demand)
     ↓
-[OPTION B - Đàm Việt Cường] USER + AI CO-CREATE (Interactive AI Co-Pilot with Card Review & Dual Mode)
+[OPTION B - Đàm Việt Cường] USER + AI CO-CREATE (Interactive AI Co-Pilot with Dwell Trigger & Card Review)
     ↓
 [OPTION C - Trần Đức Bảo] AI CREATES / INITIATES, USER REVIEWS (Autonomous Study Digest with Instant Rollback)
 ```
-
-**Option D (Quân):** AI im đến khi user chỉ một mẩu; sinh một lời giải thích kèm nguồn; có bản dễ hơn và đóng về ba mẩu thô. Không quiz, không digest. Chi tiết: [03-human-ai-design-hoangminhquan.md](03-human-ai-design-hoangminhquan.md).
 
 ---
 
@@ -79,7 +77,7 @@
 | Tiêu chí thiết kế | Option A (User-Led — Huy) | Option B (Co-Creation — Cường) | Option C (AI-Led — Bảo) | Option D (On-demand — Quân) |
 |---|---|---|---|---|
 | **1. Role & Agency (User & AI làm gì?)** | User nắm 100% quyền sáng tạo nội dung. AI chỉ làm nhiệm vụ lưu trữ và hiển thị khay ghi chú trực quan. | User đóng vai trò "Biên tập viên / Người kiểm duyệt". AI đóng vai trò "Trợ lý soạn thảo đề xuất". | AI đóng vai trò "Gia sư tự động chuẩn bị tài liệu". User đóng vai trò "Người trải nghiệm & Người quyết định cuối cùng". | User chỉ đúng một mẩu. AI im đến khi được gọi, rồi giải thích đúng mẩu đó. |
-| **2. Decision (Act / Ask / Don't Act? Vì sao?)** | **Don't Act**: AI không suy luận hay tự sinh nội dung vì người dùng muốn tự tay tổng hợp chính xác theo tư duy cá nhân. | **Ask / Propose**: AI đưa ra bản thảo gợi ý kèm nút hành động rõ ràng (*Duyệt / Sửa / Xóa*) để user luôn làm chủ. | **Act with High Transparency**: AI tự động tạo gói ôn tập ngay lập tức để tiết kiệm tối đa thời gian cho học viên, đi kèm trích dẫn nguồn. | **Ask on demand**: AI không đề xuất cả bộ, không soạn sẵn. Chỉ trả lời khi user chỉ một mẩu — đo baseline của Hoàn. |
-| **3. Expectation & Limit (Hiểu năng lực/giới hạn)** | Giao diện ghi rõ: *"Ghi chú được trích xuất nguyên văn từ bài học và tự động lưu đám mây"*. | Banner ghi rõ: *"Tài liệu được gợi ý từ ghi chú của bạn. Hãy kiểm tra nội dung trước khi lưu"*. | Thông báo: *"Đã tạo bản tóm tắt và 3 câu hỏi trắc nghiệm dựa trên slide bài học"*. | Câu mở *trước* khi AI viết: *"Mình không soạn bộ ôn, không làm quiz. Mình im cho đến khi bạn chỉ một mẩu."* |
-| **4. Evidence & Uncertainty (Minh bạch tín hiệu)** | Mỗi thẻ ghi chú hiển thị rõ: Tên Slide, Vị trí highlight, Thời gian ghi chép. | Mỗi thẻ gợi ý đều có badge đính kèm: *"Dựa vào Highlight Slide 3"* hoặc *"Dựa vào điểm Chưa hiểu Slide 11"*. | Hiển thị trích dẫn nguồn (Source Citation) và ảnh thu nhỏ (thumbnail) của slide tương ứng. | Mẩu gốc nằm trên lời giải; badge nguồn; tag *"AI không chắc"* trên Slide 7. |
-| **5. Control & Recovery (Kiểm soát & Phục hồi)** | Nút Undo/Redo, kéo thả tự do, chỉnh sửa text trực tiếp bất cứ lúc nào. | Nút *Regenerate* (đổi thẻ khác), nút *Edit* trực tiếp trên thẻ, nút *Reject* loại bỏ thẻ không thích. | Nút *Chỉnh sửa*, nút *Tùy chỉnh theo mục tiêu điểm*, và nút *Khôi phục về ghi chú gốc* (Instant Reset/Rollback). | Nút *Giải thích dễ hơn*, nút *Đóng về ba mẩu*, chọn mẩu khác bất cứ lúc nào. |
+| **2. Decision (Act / Ask / Don't Act? Vì sao?)** | **Don't Act**: AI không suy luận hay tự sinh nội dung vì người dùng muốn tự tay tổng hợp chính xác theo tư duy cá nhân. | **Ask & Propose**: AI đưa ra bản thảo gợi ý khi có tín hiệu dừng 10s và đợi người dùng bấm duyệt, đảm bảo người học luôn làm chủ. | **Act with High Transparency**: AI tự động tạo gói ôn tập ngay lập tức để tiết kiệm tối đa thời gian cho học viên, đi kèm trích dẫn nguồn. | **Ask on demand**: AI không đề xuất cả bộ, không soạn sẵn. Chỉ trả lời khi user chỉ một mẩu — đo baseline của Hoàn. |
+| **3. Expectation & Limit (Hiểu năng lực/giới hạn)** | Giao diện ghi rõ: *"Ghi chú được trích xuất nguyên văn từ bài học và tự động lưu đám mây"*. | Banner ghi rõ: *"Tài liệu được gợi ý từ ghi chú của bạn. Hãy kiểm tra nội dung trước khi lưu"*. | Thông báo: *"Đã tạo bản tóm tắt và 3 câu hỏi trắc nghiệm dựa trên slide bài học"*. | Câu mở trước khi AI viết: *"Mình không soạn bộ ôn, không làm quiz. Mình im cho đến khi bạn chỉ một mẩu."* |
+| **4. Evidence & Uncertainty (Minh bạch tín hiệu)** | Mỗi thẻ ghi chú hiển thị rõ: Tên Slide, Vị trí highlight, Thời gian ghi chép. | Mỗi thẻ gợi ý đều có badge đính kèm: *"Dựa vào Highlight Slide 3"* hoặc *"Dựa vào điểm Chưa hiểu Slide 11"*. | Hiển thị trích dẫn nguồn (Source Citation) và ảnh thu nhỏ (thumbnail) của slide tương ứng. | Mẩu gốc nằm trên lời giải; badge nguồn; tag *"AI không chắc"* nếu vùng khoanh không trùng rõ thành phần slide. |
+| **5. Control & Recovery (Kiểm soát & Phục hồi)** | Nút Undo/Redo, kéo thả tự do, chỉnh sửa text trực tiếp bất cứ lúc nào. | Nút `[↻ Soạn lại]`, nút `[Thu hồi — về lại im lặng]`, nút gõ câu hỏi trò chuyện trực tiếp. | Nút `[Quay lại ghi chú gốc]` (Instant Rollback), nút sửa từng phần và đổi độ khó. | Nút *Giải thích dễ hơn*, nút *Đóng về ba mẩu*, chọn mẩu khác bất cứ lúc nào. |
